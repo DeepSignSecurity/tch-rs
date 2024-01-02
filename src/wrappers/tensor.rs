@@ -15,6 +15,7 @@ use torch_sys::*;
 
 /// A tensor object.
 #[must_use]
+#[derive(Debug)]
 pub struct Tensor {
     pub(super) c_tensor: *mut C_tensor,
 }

@@ -1,7 +1,6 @@
 use pyo3::prelude::*;
 use pyo3::{
-    exceptions::{PyTypeError, PyValueError},
-    AsPyPointer,
+    exceptions::{PyTypeError, PyValueError}
 };
 pub use tch;
 pub use torch_sys;
