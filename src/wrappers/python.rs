@@ -1,5 +1,10 @@
-use crate::{TchError, Tensor};
+use pyo3::exceptions::{PyTypeError, PyValueError};
+use pyo3::prelude::*;
+
+pub use torch_sys;
 use torch_sys::python::{self, C_pyobject};
+
+use crate::{TchError, Tensor};
 
 pub type CPyObject = C_pyobject;
 
@@ -33,12 +38,6 @@ impl Tensor {
     }
 }
 
-use pyo3::{
-    AsPyPointer, exceptions::{PyTypeError, PyValueError},
-};
-use pyo3::prelude::*;
-pub use torch_sys;
-
 pub struct PyTensor(pub Tensor);
 
 impl std::ops::Deref for PyTensor {
@@ -69,7 +68,7 @@ impl<'source> FromPyObject<'source> for PyTensor {
 
 impl IntoPy<PyObject> for PyTensor {
     fn into_py(self, py: Python<'_>) -> PyObject {
-        // There is no fallible alternative to ToPyObject/IntoPy at the moment so we return
+        // There is no fallible alternative to ToPyObject/IntoPy at the moment, so we return
         // None on errors. https://github.com/PyO3/pyo3/issues/1813
         self.0.pyobject_wrap().map_or_else(
             |_| py.None(),
