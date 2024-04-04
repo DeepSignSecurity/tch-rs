@@ -2,9 +2,6 @@
 extern crate lazy_static;
 
 
-#[cfg(feature = "pyo3")]
-pub mod py;
-
 pub mod data;
 
 mod error;
