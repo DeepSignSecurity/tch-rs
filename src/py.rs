@@ -2,27 +2,26 @@ use pyo3::{
     AsPyPointer, exceptions::{PyTypeError, PyValueError},
 };
 use pyo3::prelude::*;
-pub use tch;
 pub use torch_sys;
 
-pub struct PyTensor(pub tch::Tensor);
+pub struct PyTensor(pub super::Tensor);
 
 impl std::ops::Deref for PyTensor {
-    type Target = tch::Tensor;
+    type Target = super::Tensor;
 
     fn deref(&self) -> &Self::Target {
         &self.0
     }
 }
 
-pub fn wrap_tch_err(err: tch::TchError) -> PyErr {
+pub fn wrap_tch_err(err: super::TchError) -> PyErr {
     PyErr::new::<PyValueError, _>(format!("{err:?}"))
 }
 
 impl<'source> FromPyObject<'source> for PyTensor {
     fn extract(ob: &'source PyAny) -> PyResult<Self> {
-        let ptr = ob.as_ptr() as *mut tch::python::CPyObject;
-        let tensor = unsafe { tch::Tensor::pyobject_unpack(ptr) };
+        let ptr = ob.as_ptr() as *mut super::python::CPyObject;
+        let tensor = unsafe { super::Tensor::pyobject_unpack(ptr) };
         tensor
             .map_err(wrap_tch_err)?
             .ok_or_else(|| {
