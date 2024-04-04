@@ -53,8 +53,8 @@ pub fn wrap_tch_err(err: TchError) -> PyErr {
 }
 
 impl<'source> FromPyObject<'source> for PyTensor {
-    fn extract(ob: &'source PyAny) -> PyResult<Self> {
-        let ptr = ob.as_ptr() as *mut super::python::CPyObject;
+    fn extract_bound(ob: &Bound<'source, PyAny>)  -> PyResult<Self> {
+        let ptr = ob.as_ptr() as *mut CPyObject;
         let tensor = unsafe { Tensor::pyobject_unpack(ptr) };
         tensor
             .map_err(wrap_tch_err)?
