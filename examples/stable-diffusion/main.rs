@@ -36,7 +36,6 @@
 //
 //   cargo run --release --example tensor-tools cp ./data/vae.npz ./data/vae.ot
 //   cargo run --release --example tensor-tools cp ./data/unet.npz ./data/unet.ot
-///
 // TODO: fix tensor_tools so that it works properly there.
 // TODO: Split this file, probably in a way similar to huggingface/diffusers.
 use std::collections::{HashMap, HashSet};
@@ -2449,7 +2448,6 @@ impl DDIMScheduler {
 }
 
 fn main() -> anyhow::Result<()> {
-    tch::maybe_init_cuda();
     println!("Cuda available: {}", tch::Cuda::is_available());
     println!("Cudnn available: {}", tch::Cuda::cudnn_is_available());
     // TODO: Switch to using claps to allow more flags?
